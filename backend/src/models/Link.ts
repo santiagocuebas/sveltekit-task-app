@@ -1,36 +1,29 @@
 import {
-  BaseEntity,
-  Column,
-  CreateDateColumn,
-  Entity,
-  ManyToOne,
-  PrimaryColumn,
-  Relation,
-  UpdateDateColumn
+	BaseEntity,
+	Column,
+	CreateDateColumn,
+	Entity,
+	PrimaryColumn
 } from 'typeorm';
 import { ILink } from '../global.js';
-import { User } from './index.js';
 
 @Entity()
 export class Link extends BaseEntity implements ILink {
-  @PrimaryColumn('varchar')
-  declare id: string;
+	@PrimaryColumn('varchar')
+	id!: string;
 
-  @Column('varchar')
-  declare title: string;
+	@Column('varchar')
+	authorId!: string;
 
-  @Column('varchar')
-  declare url: string;
+	@Column('varchar')
+	title!: string;
 
-  @Column('varchar')
-  declare description: string;
+	@Column('varchar')
+	url!: string;
 
-  @CreateDateColumn()
-  declare createdAt: Date;
+	@Column('varchar')
+	description!: string;
 
-  @UpdateDateColumn()
-  declare updatedAt: Date;
-
-  @ManyToOne(() => User, (user) => user.links)
-  declare author: Relation<User>;
+	@CreateDateColumn()
+	createdAt!: Date;
 }

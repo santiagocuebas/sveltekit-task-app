@@ -9,7 +9,7 @@ export const dbConn = new DataSource({
 	password: DB_PASS,
 	username: DB_USER,
 	database: DB_DATABASE,
-	synchronize: true,
+	synchronize: false,
 	logging: true,
 	entities
 });

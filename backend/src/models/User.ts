@@ -3,34 +3,31 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  OneToMany,
-  PrimaryColumn,
-  Relation
+  PrimaryColumn
 } from 'typeorm';
 import { IUser } from '../global.js';
-import { Link } from './Link.js';
-
 
 @Entity()
 export class User extends BaseEntity implements IUser {
   @PrimaryColumn('varchar')
-  declare id: string;
+  id!: string;
 
   @Column('varchar')
-  declare firstname: string;
+  firstname!: string;
 
   @Column('varchar')
-  declare lastname: string;
+  lastname!: string;
 
   @Column('varchar', { unique: true })
-  declare email: string;
+  email!: string;
 
   @Column('varchar')
-  declare password: string;
+  private password!: string;
 
   @CreateDateColumn()
-  declare createdAt: Date;
+  createdAt!: Date;
 
-  @OneToMany(() => Link, (link) => link.author)
-  declare links: Relation<Link[]>;
+  get getPassword() {
+    return this.password;
+  }
 }

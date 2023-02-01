@@ -3,7 +3,9 @@ import { User as _User } from './models/index.js';
 
 declare global {
 	namespace Express {
-		interface User extends _User {}
+		interface Request {
+			user: _User;
+		}
 	}
 }
 
@@ -12,17 +14,20 @@ export interface IUser {
 	firstname: string;
 	lastname: string;
 	email: string;
-	password: string;
 	createdAt: Date;
 }
 
 export interface ILink {
 	id: string;
+	authorId: string;
 	title: string;
 	url: string;
 	description: string;
 	createdAt: Date;
-	updatedAt: Date;
+}
+
+export interface Error {
+	[index: string]: string;
 }
 
 export type Direction = (

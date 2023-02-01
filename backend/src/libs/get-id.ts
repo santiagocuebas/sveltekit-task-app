@@ -5,7 +5,7 @@ export const getUserId = async (): Promise<string> => {
   let id = '';
 
   for (let i = 0; i < 16; i++) {
-    id = validChar.charAt(Math.random() * validChar.length);
+    id += validChar.charAt(Math.random() * validChar.length);
   }
 
   const user = await User.findOneBy({ id });
@@ -20,7 +20,7 @@ export const getLinkId = async (): Promise<string> => {
   let id = '';
 
   for (let i = 0; i < 32; i++) {
-    id = validChar.charAt(Math.random() * validChar.length);
+    id += validChar.charAt(Math.random() * validChar.length);
   }
 
   const link = await Link.findOneBy({ id });
