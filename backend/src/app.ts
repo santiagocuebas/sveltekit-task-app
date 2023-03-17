@@ -21,15 +21,6 @@ app.use(cors({
 }));
 app.use(multer().none());
 
-// Global Variables
-// app.use((_req, res, next) => {
-// 	res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
-// 	res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, HEAD, OPTIONS');
-// 	res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authentication');
-// 	res.header('Access-Control-Allow-Credentials', 'true');
-// 	next();
-// });
-
 // Routes
 app.use('/api/auth', route.Auth);
 app.use('/api/link', route.Link);
