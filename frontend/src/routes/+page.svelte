@@ -9,7 +9,7 @@
 
 <style>
   .main-container {
-    background-image: url('background.jpeg');
+    background-image: url('/background.jpeg');
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;

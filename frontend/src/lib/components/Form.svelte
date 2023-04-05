@@ -1,25 +1,23 @@
 <script lang="ts">
-  import { goto } from '$app/navigation';
-	import type { ResponseData, DataItem } from '../global.js';
+  import { handleRequest } from '$lib/services/services.js';
+	import type { DataItem } from '../global.js';
 
 	export let action: string;
 	export let method: string = 'POST';
-	export let change: (value: boolean) => void;
+	export let show: boolean;
 	export let errors: (data: DataItem) => void;
 
 	async function handleSubmit (this: HTMLFormElement) {
-		const data: ResponseData = await fetch(this.action, {
-			method: this.method,
-			credentials: 'include',
-			body: new FormData(this)
-		}).then(res => res.json());
+		const data = await handleRequest(this);
 	
-		if (typeof data.userURL === 'string') goto(data.userURL);
+		if (typeof data.id === 'string') {
+			window.location.href = '/' + data.id;
+		}
 
 		if (data.message !== undefined) console.log(data.message);
 
 		if (data.errors !== undefined) {
-			change(true);
+			show = true;
 			errors(data.errors as DataItem);
 		}
 	};

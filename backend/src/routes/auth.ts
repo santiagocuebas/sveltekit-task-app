@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { getSerializedCookie } from '../libs/serialized-cookie.js';
-import { getUserId } from '../libs/get-id.js';
+import { getId } from '../libs/get-id.js';
 import { isLoggedIn, isNotLoggedIn } from '../middlewares/logged.js';
 import { validate } from '../middlewares/validation.js';
 import { User } from '../models/index.js';
@@ -20,7 +20,7 @@ router.post(
 
 		res.set('Set-Cookie', serializedCookie);
 
-		return res.json({ userURL: '/' + user.id });
+		return res.json({ id: user.id });
 	}
 );
 
@@ -29,21 +29,19 @@ router.post(
 	isNotLoggedIn,
 	validate(arraySignup),
 	async (req, res) => {
-		const user: User = User.create({
-			id: await getUserId(),
+		const user = await User.create({
+			id: await getId('User', 16),
 			firstname: req.body.firstname,
 			lastname: req.body.lastname,
 			email: req.body.email,
 			password: await encryptPassword(req.body.password)
-		});
-
-		await user.save();
+		}).save();
 
 		const serializedCookie = getSerializedCookie(user);
 
 		res.set('Set-Cookie', serializedCookie);
 		
-		return res.json({ userURL: '/' + user.id });
+		return res.json({ id: user.id });
 		
 	}
 );

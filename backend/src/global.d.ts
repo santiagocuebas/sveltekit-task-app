@@ -1,10 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
-import { User as _User } from './models/index.js';
+import { User } from './models/index.js';
 
 declare global {
 	namespace Express {
 		interface Request {
-			user: _User;
+			user: User;
 		}
 	}
 }

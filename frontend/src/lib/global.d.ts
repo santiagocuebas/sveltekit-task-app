@@ -1,9 +1,22 @@
 export interface IUser {
-	[index: string]: string;
+	id: string;
+	firstname: string;
+	lastname: string;
+	email: string;
+	createdAt: Date;
+}
+
+export interface ILink {
+	id: string;
+	authorId: string;
+	title: string;
+	url: string;
+	description: string;
+	createdAt: Date;
 }
 
 export interface ResponseData {
-	[index: string]: DataItem | string | boolean;
+	[index: string]: DataItem | ILink | string | boolean;
 }
 
 export interface DataItem {

@@ -8,11 +8,13 @@ export const validate = (validations: ValidationChain[]) => {
 
 		const errs = validationResult(req);
 
-		if (errs.isEmpty()) return next();
+		if (errs.isEmpty()) {
+			return next();
+		}
 
 		const errors = getErrorMessages(errs.array());
 
-		res.status(400).json({ errors });
+		return res.json({ errors });
 	};
 };
 

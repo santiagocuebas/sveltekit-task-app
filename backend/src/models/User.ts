@@ -10,24 +10,20 @@ import { IUser } from '../global.js';
 @Entity()
 export class User extends BaseEntity implements IUser {
   @PrimaryColumn('varchar')
-  id!: string;
+  public id!: string;
 
   @Column('varchar')
-  firstname!: string;
+  public firstname!: string;
 
   @Column('varchar')
-  lastname!: string;
+  public lastname!: string;
 
   @Column('varchar', { unique: true })
-  email!: string;
+  public email!: string;
 
   @Column('varchar')
-  private password!: string;
+  public password!: string;
 
   @CreateDateColumn()
-  createdAt!: Date;
-
-  get getPassword() {
-    return this.password;
-  }
+  public createdAt!: Date;
 }

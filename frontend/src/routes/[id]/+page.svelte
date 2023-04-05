@@ -1,102 +1,68 @@
 <script lang="ts">
 	import type { PageData } from './$types';
-  import type { DataItem } from '$lib/global.js';
+  import type { DataItem, ILink } from '$lib/global.js';
+	import { clickOutside } from '$lib/services/click-outside';
 	import Nav from '$lib/components/Nav.svelte';
 	import Link from '$lib/components/Link.svelte';
-	import Add from '$lib/components/AddLink.svelte';
-	import Edit from '$lib/components/EditLink.svelte'
-	import Input from '$lib/components/Input.svelte';
+	import Form from '$lib/components/FormLink.svelte';
 	import ErrorBox from '$lib/components/ErrorBox.svelte';
 	
 	export let data: PageData;
 
-	let { links, user } = data;
-
 	let errors: DataItem = {};
-	let visibleAdd = false;
-	let visibleAddError = false;
-	let visibleEdit = false;
-	let visibleEditError = false;
-	let link: any = null;
-
-	let changeVisibilityAdd = (value: boolean) => visibleAdd = value;
+	let visible = false;
+	let visibleError = false;
+	let link: ILink | null = null;
 	
-	let changeVisibilityEdit = (value: boolean, values: any) => {
+	let changeVisibility = (value: boolean, values: ILink | null) => {
 		link = values;
-		
-		visibleEdit = value;
+		visible = value;
+		visibleError = false;
 	};
-
-	let changeVisibilityAddError = (value: boolean) => visibleAddError = value;
-
-	let changeVisibilityEditError = (value: boolean) => visibleEditError = value;
 	
 	const setErrors = (data: DataItem) => errors = data;
 </script>
 
-{#if visibleAdd}
+{#if visible}
 <div class="link-absolute">
-	<button class="link-occult" on:click={() => changeVisibilityAdd(false)}>
-		-
-	</button>
-	<div class="link-add">
-		<Add
-			action='http://localhost:4200/api/link/add'
-			bind:change={changeVisibilityAdd}
-			bind:links={links}
-			changeVisibility={changeVisibilityAddError}
-			errors={setErrors}
-		>
-			{#if visibleAddError}
-				<ErrorBox hide={changeVisibilityAddError} errors={errors} />
-			{/if}
-			<Input name='title' text='Title' className='input-upload' />
-			<Input name='url' text='URL' className='input-upload' />
-		</Add>
-	</div>
-</div>
-{/if}
-
-{#if visibleEdit}
-<div class="link-absolute">
-	<button class="link-occult" on:click={() => changeVisibilityEdit(false, link)}>
-		-
-	</button>
-	<div class="link-add">
-		<Edit
-			action={`http://localhost:4200/api/link/edit/${link.id}`}
-			bind:change={changeVisibilityEdit}
-			bind:links={links}
+	<div
+		class="link-container"
+		use:clickOutside
+		on:outclick={() => changeVisibility(false, null)}
+	>
+		<Form
+			bind:visible={visible}
+			bind:show={visibleError}
+			bind:links={data.links}
 			bind:link={link}
-			changeVisibility={changeVisibilityEditError}
 			errors={setErrors}
 		>
-			{#if visibleEditError}
-				<ErrorBox hide={changeVisibilityEditError} errors={errors} />
+			{#if visibleError}
+				<ErrorBox bind:hide={visibleError} errors={errors} />
 			{/if}
-		</Edit>
+		</Form>
 	</div>
 </div>
 {/if}
 
-<Nav id={user.id} />
+<Nav id={data.user.id} />
 <div class="main-container">
 	<div class="link-user">
-		Welcome {user.firstname} {user.lastname}
+		Welcome {data.user.firstname} {data.user.lastname}
 	</div>
 
 	<div class="links-container">
-		{#if links.length > 0}
-			{#each links as link (link.id)}
-				<Link link={link} bind:change={changeVisibilityEdit} />
+		{#if data.links.length > 0}
+			{#each data.links as link (link.id)}
+				<Link link={link} bind:change={changeVisibility} />
 			{/each}
-			<button class="link-button" on:click={() => changeVisibilityAdd(true)}>
+			<button class="link-button" on:click={() => visible = true}>
 				+
 			</button>
 		{:else}
 			<div class="link-message">
 				Haven't saved any links yet?
-				<button class="link-save" on:click={() => changeVisibilityAdd(true)}>
+				<button class="link-save" on:click={() => visible = true}>
 					Starts now!
 				</button>
 			</div>
@@ -116,30 +82,7 @@
 		z-index: 200;
 	}
 
-	.link-occult {
-		display: flex;
-		position: absolute;
-		justify-content: center;
-		align-items: center;
-		width: 50px;
-		height: 50px;
-		right: 0;
-		margin-top: 25px;
-		margin-right: 40px;
-		border: none;
-		border-radius: 50%;
-		background-color: #f02a2a;
-		font-size: 32px;
-		font-weight: 700;
-		color: #ffffff;
-		cursor: pointer;
-	}
-
-	.link-occult:hover {
-		background-color: #f72323;
-	}
-
-	.link-add {
+	.link-container {
 		margin: auto;
 		margin-top: 140px;
 		padding: 20px;

@@ -6,40 +6,22 @@ const router = Router();
 
 router.use(isLoggedIn);
 
-router.get(
-	'/links',
-	async (req, res) => {
-		if (req.user !== undefined) {
-			const { id } = req.user;
+router.get('/links', async (req, res) => {
+	const links = await Link.find({
+		where: { authorId: req.user.id },
+		order: { createdAt: 'DESC' }
+	});
 
-			const links = await Link.find({
-				where: { authorId: id },
-				order: { createdAt: 'DESC' }
-			});
+	return res.json({ links });
+});
 
-			return res.json({ url: '/' + id, links });
-		}
+router.delete('/delete', async (req, res) => {
+  await Link.delete({ authorId: req.user.id });
+	await User.delete({ id: req.user.id });
 
-		return res.json({ redirect: true, url: '/' });
-	}
-);
+	res.clearCookie('authenticate');
 
-router.delete(
-  '/delete',
-  async (req, res) => {
-    if (req.user !== undefined) {
-      const id = req.user.id;
-
-      await Link.delete({ authorId: id });
-			await User.delete({ id });
-
-			res.clearCookie('authenticate');
-
-      return res.json({ url: '/' });
-    }
-
-    return res.json({ redirect: true, url: '/' });
-  }
-);
+  return res.json({ url: '/' });
+});
 
 export default router;

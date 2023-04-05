@@ -4,7 +4,11 @@ import {
 	isMatchPassword,
 	isRegisterUser,
 	isCorrectPassword,
-	isValidLink
+	isValidLink,
+	isValidTitle,
+	isValidURL,
+	isValidTitleEdit,
+	isValidURLEdit
 } from './customValidators.js';
 
 export const arraySignup = [
@@ -47,11 +51,13 @@ export const arrayLink = [
 		.customSanitizer((value: string) => {
 			const firstLetter = value.at(0) as string;
 			return value.replace(firstLetter, firstLetter.toUpperCase());
-		}),
+		})
+		.custom(isValidTitle),
 	body('url', 'Invalid url')
 		.exists({ checkFalsy: true }).bail()
 		.isURL().bail()
-		.isLength({ max: 255 }),
+		.isLength({ max: 255 })
+		.custom(isValidURL),
 	body('description', 'Invalid description')
 		.isString().bail()
 		.isLength({ max: 255 })
@@ -68,11 +74,13 @@ export const arrayEditLink = [
 		.customSanitizer((value: string) => {
 			const firstLetter = value.at(0) as string;
 			return value.replace(firstLetter, firstLetter.toUpperCase());
-		}),
+		})
+		.custom(isValidTitleEdit),
 	body('url', 'Invalid url')
 		.exists({ checkFalsy: true }).bail()
 		.isURL().bail()
-		.isLength({ max: 255 }),
+		.isLength({ max: 255 })
+		.custom(isValidURLEdit),
 	body('description', 'Invalid description')
 		.isString().bail()
 		.isLength({ max: 255 })

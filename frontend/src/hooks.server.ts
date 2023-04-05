@@ -13,8 +13,6 @@ export const handle = (async ({ event, resolve }) => {
 			event.cookies.delete('authenticate');
 			throw redirect(307, '/login');
 		}
-	} else if (!event.params.id) {
-		throw redirect(307, '/login');
 	}
 
 	const res = await resolve(event);

@@ -1,13 +1,11 @@
 <script lang="ts">
 	import type { DataItem } from '$lib/global.js';
 	import Form from '$lib/components/Form.svelte';
-	import Input from '$lib/components/Input.svelte';
 	import ErrorBox from '$lib/components/ErrorBox.svelte';
+	import { DIR } from '$lib/config.js';
 
 	let errors: DataItem = {};
 	let visible = false;
-
-	const changeErrorBox = (value: boolean) => visible = value;
 	
 	const setErrors = (data: DataItem) => errors = data;
 </script>
@@ -15,15 +13,15 @@
 <div class="form-container">
 	<h2 class="form-title">Log in</h2>
 	<Form
-		action='http://localhost:4200/api/auth/login'
-		change={changeErrorBox}
+		action='{DIR}/api/auth/login'
+		show={visible}
 		errors={setErrors}
 	>
 		{#if visible}
-			<ErrorBox hide={changeErrorBox} errors={errors} />
+			<ErrorBox hide={visible} errors={errors} />
 		{/if}
-		<Input className='input-login' type='email' name='email' text='Email' />
-		<Input className='input-login' type='password' name='password' text='Password' />
+		<input type='email' name='email' placeholder='Email'>
+		<input type='password' name='password' placeholder='Password'>
 		<button>
 			Login
 		</button>
@@ -35,6 +33,19 @@
 </div>
 
 <style>
+	input {
+		width: 400px;
+		padding: 16px;
+		border: none;
+		outline: 1px solid #aaaaaa;
+		border-radius: 6px;
+		font-size: 16px;
+	}
+
+	input:focus {
+		outline: 2px solid #1989f1;
+	}
+
 	button {
 		width: 100%;
 		background-color: #2177c7;

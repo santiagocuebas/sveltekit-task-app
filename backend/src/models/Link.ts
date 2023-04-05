@@ -10,20 +10,20 @@ import { ILink } from '../global.js';
 @Entity()
 export class Link extends BaseEntity implements ILink {
 	@PrimaryColumn('varchar')
-	id!: string;
+	public id!: string;
 
 	@Column('varchar')
-	authorId!: string;
+	public authorId!: string;
 
 	@Column('varchar')
-	title!: string;
+	public title!: string;
 
 	@Column('varchar')
-	url!: string;
+	public url!: string;
 
 	@Column('varchar')
-	description!: string;
+	public description!: string;
 
 	@CreateDateColumn()
-	createdAt!: Date;
+	public createdAt!: Date;
 }

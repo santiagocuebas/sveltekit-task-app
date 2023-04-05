@@ -1,13 +1,11 @@
 <script lang="ts">
 	import type { DataItem } from '$lib/global.js';
 	import Form from '$lib/components/Form.svelte';
-	import Input from '$lib/components/Input.svelte';
 	import ErrorBox from '$lib/components/ErrorBox.svelte';
+	import { DIR } from '$lib/config.js';
 
 	let errors: DataItem = {};
 	let visible = false;
-
-	const changeErrorBox = (value: boolean) => visible = value;
 
 	const setErrors = (data: DataItem) => errors = data;
 </script>
@@ -15,18 +13,18 @@
 <div class="form-container">
 	<h2 class="form-title">Sign up</h2>
 	<Form
-		action='http://localhost:4200/api/auth/signup'
-		change={changeErrorBox}
+		action='{DIR}/api/auth/signup'
+		show={visible}
 		errors={setErrors}
 	>
 		{#if visible}
-			<ErrorBox hide={changeErrorBox} errors={errors} />
+			<ErrorBox hide={visible} errors={errors} />
 		{/if}
-		<Input className='input-signup' name='firstname' text='Firstname' />
-		<Input className='input-signup' name='lastname' text='Lastname' />
-		<Input className='input-signup' type='email' name='email' text='Email' />
-		<Input className='input-signup' type='password' name='password' text='Password' />
-		<Input className='input-signup' type='password' name='confirmPassword' text='Confirm Password' />
+		<input type='text' name='firstname' placeholder='Firstname'>
+		<input type='text' name='lastname' placeholder='Lastname'>
+		<input type='email' name='email' placeholder='Email'>
+		<input type='password' name='password' placeholder='Password'>
+		<input type='password' name='confirmPassword' placeholder='Confirm Password'>
 		<button>
 			Register
 		</button>
@@ -37,6 +35,19 @@
 </div>
 
 <style>
+	input {
+		width: 360px;
+		padding: 14px;
+		border: none;
+		outline: 1px solid #aaaaaa;
+		border-radius: 6px;
+		font-size: 16px;
+	}
+
+	input:focus {
+		outline: 2px solid #1989f1;
+	}
+
 	button {
 		width: min-content;
 		height: min-content;

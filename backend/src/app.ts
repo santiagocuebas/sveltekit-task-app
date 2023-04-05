@@ -3,6 +3,7 @@ import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
 import multer from 'multer';
 import cors from 'cors';
+import { ORIGIN } from './config.js';
 import * as route from './routes/index.js';
 
 // Initializions
@@ -14,9 +15,9 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-	origin: 'http://localhost:3000',
-	methods: 'GET, POST, PUT, DELETE, HEAD, OPTIONS',
-	allowedHeaders: 'Origin, X-Requested-With, Content-Type, Accept, Authentication',
+	origin: ORIGIN,
+	methods: 'GET, POST, PUT, DELETE, OPTIONS',
+	allowedHeaders: 'Origin, X-Requested-With, Content-Type, Accept',
 	credentials: true
 }));
 app.use(multer().none());
