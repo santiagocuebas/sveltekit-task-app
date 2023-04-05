@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { getSerializedCookie } from '../libs/serialized-cookie.js';
-import { getUserId } from '../libs/get-id.js';
+import { getId } from '../libs/get-id.js';
 import { isLoggedIn, isNotLoggedIn } from '../middlewares/logged.js';
 import { validate } from '../middlewares/validation.js';
 import { User } from '../models/index.js';
@@ -8,25 +8,29 @@ import { arraySignup, arrayLogin } from '../validations/arrayValidations.js';
 import { encryptPassword } from '../libs/bcrypt.js';
 const router = Router();
 router.post('/login', isNotLoggedIn, validate(arrayLogin), async (req, res) => {
+    // Search a user
     const user = await User.findOneBy({ email: req.body.email });
+    // Create user cookie
     const serializedCookie = getSerializedCookie(user);
     res.set('Set-Cookie', serializedCookie);
-    return res.json({ userURL: '/' + user.id });
+    return res.json({ id: user.id });
 });
 router.post('/signup', isNotLoggedIn, validate(arraySignup), async (req, res) => {
-    const user = User.create({
-        id: await getUserId(),
+    // Create a new user
+    const user = await User.create({
+        id: await getId('User', 16),
         firstname: req.body.firstname,
         lastname: req.body.lastname,
         email: req.body.email,
         password: await encryptPassword(req.body.password)
-    });
-    await user.save();
+    }).save();
+    // Create user cookie
     const serializedCookie = getSerializedCookie(user);
     res.set('Set-Cookie', serializedCookie);
-    return res.json({ userURL: '/' + user.id });
+    return res.json({ id: user.id });
 });
 router.post('/logout', isLoggedIn, (_req, res) => {
+    // Delete user cookie
     res.clearCookie('authenticate');
     return res.json({ url: '/' });
     ;

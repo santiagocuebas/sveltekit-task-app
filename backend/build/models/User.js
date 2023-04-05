@@ -15,9 +15,6 @@ let User = class User extends BaseEntity {
     email;
     password;
     createdAt;
-    get getPassword() {
-        return this.password;
-    }
 };
 __decorate([
     PrimaryColumn('varchar'),

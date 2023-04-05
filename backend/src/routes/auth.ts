@@ -14,8 +14,10 @@ router.post(
 	isNotLoggedIn,
 	validate(arrayLogin),
 	async (req, res) => {
+		// Search a user
 		const user = await User.findOneBy({ email: req.body.email }) as User;
 
+		// Create user cookie
 		const serializedCookie = getSerializedCookie(user);
 
 		res.set('Set-Cookie', serializedCookie);
@@ -29,6 +31,7 @@ router.post(
 	isNotLoggedIn,
 	validate(arraySignup),
 	async (req, res) => {
+		// Create a new user
 		const user = await User.create({
 			id: await getId('User', 16),
 			firstname: req.body.firstname,
@@ -37,6 +40,7 @@ router.post(
 			password: await encryptPassword(req.body.password)
 		}).save();
 
+		// Create user cookie
 		const serializedCookie = getSerializedCookie(user);
 
 		res.set('Set-Cookie', serializedCookie);
@@ -50,6 +54,7 @@ router.post(
 	'/logout',
 	isLoggedIn,
 	(_req, res) => {
+		// Delete user cookie
 		res.clearCookie('authenticate');
 		return res.json({ url: '/' });;
 	}

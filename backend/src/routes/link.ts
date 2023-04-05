@@ -13,6 +13,7 @@ router.post(
 	'/add',
 	validate(arrayLink),
 	async (req, res) => {
+		// Create a new link
 		const link: Link = await Link.create({
 			id: await getId(),
 			authorId: req.user.id,
@@ -29,6 +30,7 @@ router.put(
 	'/edit/:id',
 	validate(arrayEditLink),
 	async (req, res) => {
+		// Update link
 		await Link.update({ id: req.params.id }, {
 			title: req.body.title,
 			url: req.body.url,
@@ -40,6 +42,7 @@ router.put(
 );
 
 router.delete('/delete/:id', async (req, res) => {
+	// Delete link
 	await Link.delete({ id: req.params.id, authorId: req.user.id });
 
 	return res.json({ delete: true });

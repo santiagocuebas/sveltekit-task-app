@@ -1,0 +1,1 @@
+{"version":3,"file":"config-47e8fa8f.js","sources":["../../../.svelte-kit/adapter-node/chunks/config.js"],"sourcesContent":["const PUBLIC_DIR = \"http://localhost:4200\";\nconst DIR = PUBLIC_DIR;\nexport {\n  DIR as D\n};\n"],"names":[],"mappings":"AAAA,MAAM,UAAU,GAAG,uBAAuB,CAAC;AACtC,MAAC,GAAG,GAAG;;;;"}

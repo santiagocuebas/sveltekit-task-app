@@ -1,23 +1,19 @@
 import { User, Link } from '../models/index.js';
-export const getUserId = async () => {
+export const getId = async (identifier = '', num = 32) => {
     const validChar = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
     let id = '';
-    for (let i = 0; i < 16; i++) {
+    for (let i = 0; i < num; i++) {
         id += validChar.charAt(Math.random() * validChar.length);
     }
-    const user = await User.findOneBy({ id });
-    if (user !== null)
-        getUserId();
-    return id;
-};
-export const getLinkId = async () => {
-    const validChar = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    let id = '';
-    for (let i = 0; i < 32; i++) {
-        id += validChar.charAt(Math.random() * validChar.length);
+    if (identifier === 'User') {
+        const user = await User.findOneBy({ id });
+        if (user !== null)
+            getId(identifier, num);
     }
-    const link = await Link.findOneBy({ id });
-    if (link !== null)
-        getLinkId();
+    else {
+        const link = await Link.findOneBy({ id });
+        if (link !== null)
+            getId();
+    }
     return id;
 };

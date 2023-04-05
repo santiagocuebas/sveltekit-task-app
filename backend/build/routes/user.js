@@ -4,24 +4,19 @@ import { Link, User } from '../models/index.js';
 const router = Router();
 router.use(isLoggedIn);
 router.get('/links', async (req, res) => {
-    if (req.user !== undefined) {
-        const { id } = req.user;
-        const links = await Link.find({
-            where: { authorId: id },
-            order: { createdAt: 'DESC' }
-        });
-        return res.json({ url: '/' + id, links });
-    }
-    return res.json({ redirect: true, url: '/' });
+    // Get all user links
+    const links = await Link.find({
+        where: { authorId: req.user.id },
+        order: { createdAt: 'DESC' }
+    });
+    return res.json({ links });
 });
 router.delete('/delete', async (req, res) => {
-    if (req.user !== undefined) {
-        const id = req.user.id;
-        await Link.delete({ authorId: id });
-        await User.delete({ id });
-        res.clearCookie('authenticate');
-        return res.json({ url: '/' });
-    }
-    return res.json({ redirect: true, url: '/' });
+    // Delete user an your links
+    await Link.delete({ authorId: req.user.id });
+    await User.delete({ id: req.user.id });
+    // Delete user cookie
+    res.clearCookie('authenticate');
+    return res.json({ url: '/' });
 });
 export default router;

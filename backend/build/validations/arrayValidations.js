@@ -1,5 +1,5 @@
 import { body, param } from 'express-validator';
-import { isValidEmail, isMatchPassword, isRegisterUser, isCorrectPassword, isValidLink } from './customValidators.js';
+import { isValidEmail, isMatchPassword, isRegisterUser, isCorrectPassword, isValidLink, isValidTitle, isValidURL, isValidTitleEdit, isValidURLEdit } from './customValidators.js';
 export const arraySignup = [
     body('firstname', 'Invalid field')
         .exists({ checkFalsy: true }).bail()
@@ -38,11 +38,13 @@ export const arrayLink = [
         .customSanitizer((value) => {
         const firstLetter = value.at(0);
         return value.replace(firstLetter, firstLetter.toUpperCase());
-    }),
+    })
+        .custom(isValidTitle),
     body('url', 'Invalid url')
         .exists({ checkFalsy: true }).bail()
         .isURL().bail()
-        .isLength({ max: 255 }),
+        .isLength({ max: 255 })
+        .custom(isValidURL),
     body('description', 'Invalid description')
         .isString().bail()
         .isLength({ max: 255 })
@@ -58,11 +60,13 @@ export const arrayEditLink = [
         .customSanitizer((value) => {
         const firstLetter = value.at(0);
         return value.replace(firstLetter, firstLetter.toUpperCase());
-    }),
+    })
+        .custom(isValidTitleEdit),
     body('url', 'Invalid url')
         .exists({ checkFalsy: true }).bail()
         .isURL().bail()
-        .isLength({ max: 255 }),
+        .isLength({ max: 255 })
+        .custom(isValidURLEdit),
     body('description', 'Invalid description')
         .isString().bail()
         .isLength({ max: 255 })

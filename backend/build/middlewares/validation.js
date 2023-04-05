@@ -4,9 +4,10 @@ export const validate = (validations) => {
     return async (req, res, next) => {
         await Promise.all(validations.map(validation => validation.run(req)));
         const errs = validationResult(req);
-        if (errs.isEmpty())
+        if (errs.isEmpty()) {
             return next();
+        }
         const errors = getErrorMessages(errs.array());
-        res.status(400).json({ errors });
+        return res.json({ errors });
     };
 };
