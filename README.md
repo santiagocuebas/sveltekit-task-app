@@ -1,4 +1,4 @@
-# Notes App with Nodejs and Mysql
+# Notes App with Nodejs, Svelte and Mysql
 Notes App is a Multi Page Application using Nodejs and Mysql.
 
 ## Installation
