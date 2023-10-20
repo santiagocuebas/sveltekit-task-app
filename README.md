@@ -4,7 +4,7 @@ Notes App is a Multi Page Application using Nodejs and Mysql.
 ## Installation
 ```
 git clone https://github.com/santiagocuebas/sveltekit-task-app
-cd svelte-links
+cd sveltekit-task-app
 cd backend
 pnpm install
 npm start
